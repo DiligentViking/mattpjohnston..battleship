@@ -68,7 +68,7 @@ function handleAttack(e) {
   if (result === "hit") {
     updateMessage("Direct hit!");
   } else {
-    updateMessage("Miss.");
+    updateMessage("Ya missed, ya lousy bum.");
   }
 
   // Check if player won
