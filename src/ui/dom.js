@@ -8,12 +8,15 @@ export function renderBoard(boardElement, gameboard, hideShips = false) {
       cell.dataset.x = x;
       cell.dataset.y = y;
 
-      if (!hideShips) {
-        const hasShip = gameboard.ships.some((entry) =>
-          entry.coords.some((coord) => coord[0] === x && coord[1] === y),
-        );
-        if (hasShip) {
+      const ship = gameboard.ships.find((entry) =>
+        entry.coords.some((coord) => coord[0] === x && coord[1] === y),
+      );
+      if (ship) {
+        if (!hideShips) {
           cell.classList.add("ship");
+        }
+        if (ship.ship.isSunk()) {
+          cell.classList.add("sunk");
         }
       }
 

@@ -20,6 +20,10 @@
   @apply cursor-default hover:bg-red-900;
 }
 
+#computer-board .cell.sunk {
+  @apply cursor-default hover:bg-orange-900;
+}
+
 #computer-board .cell.miss {
   @apply cursor-default hover:bg-slate-900;
 }
@@ -31,6 +35,14 @@
 .cell.hit::after {
   content: "✕";
   @apply text-red-400 font-bold;
+}
+
+.cell.sunk {
+  @apply bg-orange-900 border-orange-700;
+}
+
+.cell.sunk::after {
+  @apply text-orange-400 font-bold;
 }
 
 .cell.miss {
