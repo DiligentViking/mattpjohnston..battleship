@@ -13,11 +13,11 @@
 }
 
 #placement-board .cell.mouseon {
-  @apply bg-emerald-700/80 border-emerald-500/60;
+  @apply bg-emerald-700/40 border-emerald-500/20;
 }
 
 #placement-board .cell.drag {
-  @apply bg-emerald-600/80 border-emerald-400/60;
+  @apply bg-emerald-700/80 border-emerald-500/60;
 }
 
 #placement-board .cell.invalid {

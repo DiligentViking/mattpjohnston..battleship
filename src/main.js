@@ -35,7 +35,7 @@ function dragAndDropShip(e) {
   let currentCoords = getCoordsFromCell(cell);
 
   const shipCoords = controller.findShipCoords(currentCoords);
-  highlightCells(shipCoords, "mouseon");
+  highlightCells(shipCoords, "mouseon", "drag");
 
   function onMouseOver(e) {
     const cell = e.target;

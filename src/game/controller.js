@@ -62,18 +62,20 @@ export default class Controller {
     const oldCoords = shipObj.coords;
     const startCoords = oldCoords[0];
     const shipOrientation = startCoords[0] < oldCoords[1][0] ? 'horizontal' : 'vertical';
+    const indexOfClickedCell = shipObj.coords.findIndex((item) => item[0] == currentCoords[0] && item[1] == currentCoords[1]);
+    console.log(indexOfClickedCell);
     const coords = [];
 
     if (shipOrientation == 'horizontal') {
       for (let i = 0; i < oldCoords.length; i++) {
-        const x = targetCoords[0] + i;
+        const x = targetCoords[0] + i - indexOfClickedCell;
         const y = targetCoords[1];
         coords.push([x, y]);
       }
     } else {
       for (let i = 0; i < oldCoords.length; i++) {
         const x = targetCoords[0];
-        const y = targetCoords[1] + i;
+        const y = targetCoords[1] + i - indexOfClickedCell;
         coords.push([x, y]);
       }
     }
