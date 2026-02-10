@@ -13,6 +13,11 @@ export default class Gameboard {
     return ship;
   }
 
+  removeShip(startCoords) {
+    const shipIndex = this.ships.findIndex((ship) => ship.coords[0][0] == startCoords[0] && ship.coords[0][1] == startCoords[1]);
+    this.ships.splice(shipIndex, 1);
+  }
+
   receiveAttack(coord) {
     for (const entry of this.ships) {
       for (const square of entry.coords) {

@@ -12,6 +12,18 @@
   @apply bg-emerald-900/80 border-emerald-700/60;
 }
 
+#placement-board .cell.mouseon {
+  @apply bg-emerald-700/80 border-emerald-500/60;
+}
+
+#placement-board .cell.drag {
+  @apply bg-emerald-600/80 border-emerald-400/60;
+}
+
+#placement-board .cell.invalid {
+  @apply bg-red-700/80 border-red-500/60;
+}
+
 #computer-board .cell {
   @apply cursor-crosshair hover:bg-cyan-900/50;
 }

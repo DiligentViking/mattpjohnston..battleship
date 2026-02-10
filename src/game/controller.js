@@ -49,6 +49,48 @@ export default class Controller {
     return coords;
   }
 
+  findShipCoords(cellCoords) {
+    return this.humanPlayer.gameboard.ships.find((obj) => 
+      obj.coords.some((coord) => cellCoords[0] == coord[0] && cellCoords[1] == coord[1])
+    ).coords;
+  }
+
+  relocateShip(currentCoords, targetCoords, highlightCells) {
+    const shipObj = this.humanPlayer.gameboard.ships.find((obj) => 
+      obj.coords.some((coord) => currentCoords[0] == coord[0] && currentCoords[1] == coord[1])
+    );
+    const oldCoords = shipObj.coords;
+    const startCoords = oldCoords[0];
+    const shipOrientation = startCoords[0] < oldCoords[1][0] ? 'horizontal' : 'vertical';
+    const coords = [];
+
+    if (shipOrientation == 'horizontal') {
+      for (let i = 0; i < oldCoords.length; i++) {
+        const x = targetCoords[0] + i;
+        const y = targetCoords[1];
+        coords.push([x, y]);
+      }
+    } else {
+      for (let i = 0; i < oldCoords.length; i++) {
+        const x = targetCoords[0];
+        const y = targetCoords[1] + i;
+        coords.push([x, y]);
+      }
+    }
+
+    this.humanPlayer.gameboard.removeShip(startCoords);
+    
+    if (this.isValidPlacement(this.humanPlayer, coords)) {
+      highlightCells(coords, "drag");
+      this.humanPlayer.gameboard.placeShip(length, coords);
+      return true;
+    } else {
+      highlightCells(coords, "drag", "invalid");
+      this.humanPlayer.gameboard.placeShip(length, oldCoords);
+      return false;
+    }
+  }
+
   isValidPlacement(player, coords) {
     for (const coord of coords) {
       if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 9) {

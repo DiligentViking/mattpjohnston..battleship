@@ -1,5 +1,12 @@
 import Controller from "./game/controller.js";
-import { renderBoard, updateMessage, getCoordsFromCell, setGameOver, resetUI } from "./ui/dom.js";
+import {
+  renderBoard,
+  updateMessage,
+  getCoordsFromCell,
+  setGameOver,
+  resetUI,
+  highlightCells,
+} from "./ui/dom.js";
 
 const placementPhase = document.getElementById("placement-phase");
 const placementBoard = document.getElementById("placement-board");
@@ -15,10 +22,54 @@ let controller;
 
 initPlacement();
 
+placementBoard.addEventListener("mousedown", dragAndDropShip);
+
 randomiseBtn.addEventListener("click", randomiseShips);
 startBtn.addEventListener("click", startGame);
 computerBoardEl.addEventListener("click", handleAttack);
 newGameBtn.addEventListener("click", initPlacement);
+
+function dragAndDropShip(e) {
+  const cell = e.target;
+  if (!cell.classList.contains("ship")) return;
+  let currentCoords = getCoordsFromCell(cell);
+
+  const shipCoords = controller.findShipCoords(currentCoords);
+  highlightCells(shipCoords, "mouseon");
+
+  function onMouseOver(e) {
+    const cell = e.target;
+    if (!cell.classList.contains("cell")) return;
+    const targetCoords = getCoordsFromCell(cell);
+
+    const result = controller.relocateShip(currentCoords, targetCoords, highlightCells);
+
+    if (result) {
+      currentCoords = targetCoords; targetCoords;
+    }
+    return result;
+  }
+
+  function onMouseup(e) {
+    const result = onMouseOver(e);
+    endDragEvent(result);
+  }
+
+  function endDragEvent(validEnd = true) {
+    if (!validEnd) {
+      controller.relocateShip(currentCoords, shipCoords[0], highlightCells);
+    }
+
+    renderBoard(placementBoard, controller.humanPlayer.gameboard, false);
+
+    placementBoard.removeEventListener("mouseup", onMouseup);
+    placementBoard.removeEventListener("mouseover", onMouseOver);
+  }
+
+  placementBoard.addEventListener("mouseover", onMouseOver);
+  placementBoard.addEventListener("mouseup", onMouseup);
+  placementBoard.addEventListener("mouseleave", endDragEvent);
+}
 
 function initPlacement() {
   controller = new Controller();

@@ -45,6 +45,20 @@ export function getCoordsFromCell(cell) {
   return [x, y];
 }
 
+export function highlightCells(coords, ...classStyles) {
+  for (const classStyle of [...classStyles, "invalid"]) {
+    const currentHighlightedCells = document.querySelectorAll(`.${classStyle}`);
+    for (const cell of currentHighlightedCells) {
+      cell.classList.remove(classStyle);
+    }
+  }
+
+  for (const coord of coords) {
+    const cell = document.querySelector(`[data-x="${coord[0]}"][data-y="${coord[1]}"]`);
+    cell?.classList.add(...classStyles);
+  }
+}
+
 export function setGameOver(isVictory) {
   const message = document.getElementById("message");
 
