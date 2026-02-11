@@ -40,12 +40,12 @@ function dragAndDropShip(e) {
   const shipCoords = controller.findShipCoords(currentCoords);
   highlightCells(shipCoords, "mouseon", "drag");
 
-  let rotateShip = false;
+  let newShipOrientation = controller.findShipOrientation(shipCoords);
 
   function onPressR(e) {
     if (e.key !== "r") return;
-    rotateShip = !rotateShip;
-    controller.relocateShip(currentCoords, currentCoords, highlightCells, rotateShip);
+    newShipOrientation = controller.switchOrientation(newShipOrientation);
+    controller.relocateShip(currentCoords, currentCoords, newShipOrientation, highlightCells);
   }
 
   function onMouseOver(e) {
@@ -53,10 +53,10 @@ function dragAndDropShip(e) {
     if (!cell.classList.contains("cell")) return;
     const targetCoords = getCoordsFromCell(cell);
 
-    const result = controller.relocateShip(currentCoords, targetCoords, highlightCells);
+    const result = controller.relocateShip(currentCoords, targetCoords, newShipOrientation, highlightCells);
 
     if (result) {
-      currentCoords = targetCoords; targetCoords;
+      currentCoords = targetCoords;
     }
     return result;
   }
@@ -68,7 +68,7 @@ function dragAndDropShip(e) {
 
   function endDragEvent(validEnd = true) {
     if (!validEnd) {
-      controller.relocateShip(currentCoords, shipCoords[0], highlightCells);
+      controller.relocateShip(currentCoords, shipCoords[0], newShipOrientation, highlightCells);
     }
 
     renderBoard(placementBoard, controller.humanPlayer.gameboard, false);

@@ -55,23 +55,21 @@ export default class Controller {
     ).coords;
   }
 
-  relocateShip(currentCoords, targetCoords, highlightCells, rotateShip = false) {
-    const shipObj = this.humanPlayer.gameboard.ships.find((obj) => 
-      obj.coords.some((coord) => currentCoords[0] == coord[0] && currentCoords[1] == coord[1])
-    );
-    const oldCoords = shipObj.coords;
-    const startCoords = oldCoords[0];
-    const indexOfClickedCell = shipObj.coords.findIndex((item) => item[0] == currentCoords[0] && item[1] == currentCoords[1]);
+  findShipOrientation(shipCoords) {
+    return shipCoords[0][0] < shipCoords[1][0] ? 'horizontal' : 'vertical';
+  }
+
+  switchOrientation(currentOrientation) {
+    console.log(currentOrientation == 'horizontal' ? 'vertical' : 'horizontal')
+    return currentOrientation == 'horizontal' ? 'vertical' : 'horizontal';
+  }
+
+  relocateShip(currentCoords, targetCoords, newShipOrientation, highlightCells) {
+    const oldCoords = this.findShipCoords(currentCoords);
+    const indexOfClickedCell = oldCoords.findIndex((item) => item[0] == currentCoords[0] && item[1] == currentCoords[1]);
     const coords = [];
 
-    let shipOrientation = startCoords[0] < oldCoords[1][0] ? 'horizontal' : 'vertical';
-    if (rotateShip && shipOrientation == 'horizontal') {
-      shipOrientation = 'vertical';
-    } else if (rotateShip && shipOrientation == 'vertical') {
-      shipOrientation = 'horizontal';
-    }
-
-    if (shipOrientation == 'horizontal') {
+    if (newShipOrientation == 'horizontal') {
       for (let i = 0; i < oldCoords.length; i++) {
         const x = targetCoords[0] + i - indexOfClickedCell;
         const y = targetCoords[1];
@@ -85,7 +83,7 @@ export default class Controller {
       }
     }
 
-    this.humanPlayer.gameboard.removeShip(startCoords);
+    this.humanPlayer.gameboard.removeShip(oldCoords[0]);
     
     if (this.isValidPlacement(this.humanPlayer, coords)) {
       highlightCells(coords, "drag");
