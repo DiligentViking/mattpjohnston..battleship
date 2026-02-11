@@ -37,6 +37,14 @@ function dragAndDropShip(e) {
   const shipCoords = controller.findShipCoords(currentCoords);
   highlightCells(shipCoords, "mouseon", "drag");
 
+  let rotateShip = false;
+
+  function onPressR(e) {
+    if (e.key !== "r") return;
+    rotateShip = !rotateShip;
+    controller.relocateShip(currentCoords, currentCoords, highlightCells, rotateShip);
+  }
+
   function onMouseOver(e) {
     const cell = e.target;
     if (!cell.classList.contains("cell")) return;
@@ -62,10 +70,13 @@ function dragAndDropShip(e) {
 
     renderBoard(placementBoard, controller.humanPlayer.gameboard, false);
 
+    window.removeEventListener("keypress", onPressR);
     placementBoard.removeEventListener("mouseup", onMouseup);
     placementBoard.removeEventListener("mouseover", onMouseOver);
+    placementBoard.removeEventListener("mouseleave", endDragEvent);
   }
 
+  window.addEventListener("keypress", onPressR);
   placementBoard.addEventListener("mouseover", onMouseOver);
   placementBoard.addEventListener("mouseup", onMouseup);
   placementBoard.addEventListener("mouseleave", endDragEvent);

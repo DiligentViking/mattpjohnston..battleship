@@ -55,16 +55,21 @@ export default class Controller {
     ).coords;
   }
 
-  relocateShip(currentCoords, targetCoords, highlightCells) {
+  relocateShip(currentCoords, targetCoords, highlightCells, rotateShip = false) {
     const shipObj = this.humanPlayer.gameboard.ships.find((obj) => 
       obj.coords.some((coord) => currentCoords[0] == coord[0] && currentCoords[1] == coord[1])
     );
     const oldCoords = shipObj.coords;
     const startCoords = oldCoords[0];
-    const shipOrientation = startCoords[0] < oldCoords[1][0] ? 'horizontal' : 'vertical';
     const indexOfClickedCell = shipObj.coords.findIndex((item) => item[0] == currentCoords[0] && item[1] == currentCoords[1]);
-    console.log(indexOfClickedCell);
     const coords = [];
+
+    let shipOrientation = startCoords[0] < oldCoords[1][0] ? 'horizontal' : 'vertical';
+    if (rotateShip && shipOrientation == 'horizontal') {
+      shipOrientation = 'vertical';
+    } else if (rotateShip && shipOrientation == 'vertical') {
+      shipOrientation = 'horizontal';
+    }
 
     if (shipOrientation == 'horizontal') {
       for (let i = 0; i < oldCoords.length; i++) {
