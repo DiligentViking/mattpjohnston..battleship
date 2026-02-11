@@ -1,3 +1,32 @@
+import placementBgMusicUrl from '../assets/Perc&BassMix-2022-02-04_-_War_Crown_-_www.FesliyanStudios.com_.mp3';
+import battleBgMuiscUrl from '../assets/2022-03-22_-_Age_Of_Mythology_-_www.FesliyanStudios.com.mp3';
+
+export function MusicController() {
+  const placementBgMusic = new Audio(placementBgMusicUrl);
+  const battleBgMusic = new Audio(battleBgMuiscUrl);
+
+  placementBgMusic.volume = 0.5;
+  battleBgMusic.volume = 0.5;
+
+  placementBgMusic.addEventListener("canplaythrough", () => {
+    placementBgMusic.play();  // a hack
+  });
+
+  return {
+    playPlaycementBgMusic() {
+      battleBgMusic.pause();
+      placementBgMusic.currentTime = 0;
+      placementBgMusic.play();
+    },
+
+    playBattleBgMusic() {
+      placementBgMusic.pause();
+      battleBgMusic.currentTime = 0;
+      battleBgMusic.play();
+    },
+  }
+}
+
 export function renderBoard(boardElement, gameboard, hideShips = false) {
   boardElement.innerHTML = "";
 

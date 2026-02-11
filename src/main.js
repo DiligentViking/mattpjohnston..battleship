@@ -6,6 +6,7 @@ import {
   setGameOver,
   resetUI,
   highlightCells,
+  MusicController,
 } from "./ui/dom.js";
 
 const placementPhase = document.getElementById("placement-phase");
@@ -19,6 +20,8 @@ const computerBoardEl = document.getElementById("computer-board");
 const newGameBtn = document.getElementById("new-game");
 
 let controller;
+
+let musicController = MusicController();
 
 initPlacement();
 
@@ -93,6 +96,8 @@ function initPlacement() {
   gamePhase.classList.add("hidden");
   resetUI();
   updateMessage("Position your fleet, Captain.");
+
+  musicController.playPlaycementBgMusic();
 }
 
 function randomiseShips() {
@@ -111,6 +116,8 @@ function startGame() {
   renderBoard(computerBoardEl, controller.computerPlayer.gameboard, true);
 
   updateMessage("Engage the enemy, Captain.");
+
+  musicController.playBattleBgMusic();
 }
 
 function handleAttack(e) {
