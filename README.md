@@ -8,4 +8,4 @@ _A clone of [mattpjohnston](https://github.com/mattpjohnston/battleship)'s app, 
 - Ship sunkenness visuals which improves gameplay significantly.
 - Epic soundtracks that play in different phases.
 
-![Ship placement demonstration](./src/assets/ship-placement-demonstration.webm)
+![Ship placement demonstration](./src/assets/ship-placement-demonstration.GIF)
